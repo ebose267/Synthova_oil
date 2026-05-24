@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Drop — Synthova Oil's newsletter. Updates, stories, and offers from Benin City's finest cooking oil.">
+  <title>The Drop — Synthova Oil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #070705;
+      --surface: #0f0f0c;
+      --surface-2: #181815;
+      --gold: #d4af37;
+      --gold-light: #e8c84a;
+      --gold-soft: rgba(212,175,55,0.35);
+      --gold-glow: rgba(212,175,55,0.07);
+      --gold-glow-hover: rgba(212,175,55,0.12);
+      --text: #e6ddc8;
+      --text-dim: #8a7e66;
+      --text-muted: #48433a;
+      --border: rgba(212,175,55,0.1);
+      --border-hover: rgba(212,175,55,0.28);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grain texture */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ─── NAV ─────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(7,7,5,0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(1.2rem, 5vw, 3.5rem);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-brand img { height: 26px; width: auto; }
+
+    .nav-brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      color: var(--gold);
+      letter-spacing: 0.12em;
+      font-weight: 400;
+    }
+
+    .nav-brand-divider {
+      width: 1px;
+      height: 14px;
+      background: var(--border-hover);
+      margin: 0 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-action {
+      display: inline-block;
+      background: transparent;
+      border: 1px solid var(--gold-soft);
+      color: var(--gold);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.38rem 1.1rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.22s;
+    }
+
+    .nav-action:hover {
+      background: var(--gold-glow-hover);
+      border-color: var(--gold);
+    }
+
+    /* ─── HERO ───────────────────────────────── */
+    .hero {
+      padding: clamp(5rem, 14vw, 9rem) clamp(1.2rem, 5vw, 3.5rem) clamp(3.5rem, 8vw, 6rem);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-ambient {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70vw;
+      max-width: 700px;
+      height: 300px;
+      background: radial-gradient(ellipse, rgba(212,175,55,0.055) 0%, transparent 68%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: riseIn 0.9s cubic-bezier(0.22,1,0.36,1) 0.15s forwards;
+    }
+
+    .hero-wordmark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(5rem, 16vw, 11rem);
+      font-weight: 300;
+      line-height: 0.88;
+      letter-spacing: -0.03em;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: riseIn 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s forwards;
+    }
+
+    .hero-wordmark .the { color: var(--text-dim); font-style: italic; }
+    .hero-wordmark .drop { color: var(--text); display: block; }
+
+    .hero-rule {
+      width: 48px;
+      height: 1px;
+      background: var(--gold-soft);
+      margin: 0 auto 1.8rem;
+      opacity: 0;
+      animation: riseIn 0.9s cubic-bezier(0.22,1,0.36,1) 0.45s forwards;
+    }
+
+    .hero-sub {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+      line-height: 1.7;
+      max-width: 380px;
+      margin: 0 auto;
+      opacity: 0;
+      animation: riseIn 0.9s cubic-bezier(0.22,1,0.36,1) 0.55s forwards;
+    }
+
+    /* ─── FEED SHELL ─────────────────────────── */
+    .feed-shell {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 clamp(1rem, 4vw, 2rem) 8rem;
+    }
+
+    .feed-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .feed-header-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .feed-header-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── POST CARD ──────────────────────────── */
+    .post-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--gold);
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: riseIn 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .post-card:hover {
+      border-color: var(--border-hover);
+      border-top-color: var(--gold-light);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.05);
+    }
+
+    .post-img-wrap {
+      overflow: hidden;
+      max-height: 340px;
+    }
+
+    .post-img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      max-height: 340px;
+      filter: brightness(0.82) saturate(0.85);
+      transition: filter 0.4s, transform 0.6s;
+    }
+
+    .post-card:hover .post-img {
+      filter: brightness(0.92) saturate(1);
+      transform: scale(1.015);
+    }
+
+    .post-body {
+      padding: 1.8rem 2.2rem 0;
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .post-issue-tag {
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .post-meta-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--text-muted);
+    }
+
+    .post-date {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .post-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+      font-weight: 400;
+      line-height: 1.18;
+      color: var(--text);
+      margin-bottom: 1.1rem;
+      letter-spacing: -0.015em;
+    }
+
+    .post-content {
+      font-size: 0.88rem;
+      line-height: 1.85;
+      color: var(--text-dim);
+    }
+
+    .post-content p { margin-bottom: 0.75em; }
+    .post-content p:last-child { margin-bottom: 0; }
+
+    .post-content.collapsed {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .read-toggle {
+      background: none;
+      border: none;
+      color: var(--gold);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      padding: 0.9rem 0 1.4rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: opacity 0.2s;
+    }
+
+    .read-toggle:hover { opacity: 0.65; }
+
+    /* ─── ACTIONS BAR ─────────────────────────── */
+    .post-actions {
+      border-top: 1px solid var(--border);
+      padding: 0.75rem 2.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .act-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.76rem;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      padding: 0.42rem 0.75rem;
+      border-radius: 2px;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .act-btn:hover { color: var(--text); background: var(--gold-glow); }
+    .act-btn.liked { color: var(--gold); }
+
+    .act-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+      transition: transform 0.18s;
+    }
+
+    .act-btn:active svg { transform: scale(1.25); }
+    .act-btn.liked svg.heart { fill: var(--gold); stroke: var(--gold); }
+
+    .act-sep {
+      width: 1px;
+      height: 12px;
+      background: var(--border);
+      flex-shrink: 0;
+      margin: 0 0.15rem;
+    }
+
+    /* ─── COMMENTS ───────────────────────────── */
+    .comments-wrap {
+      display: none;
+      border-top: 1px solid var(--border);
+      background: var(--surface-2);
+      padding: 1.6rem 2.2rem;
+    }
+
+    .comments-wrap.open { display: block; }
+
+    .comments-list { margin-bottom: 1.8rem; }
+
+    .c-item {
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .c-item:last-child { border-bottom: none; }
+
+    .c-name {
+      font-size: 0.73rem;
+      font-weight: 500;
+      color: var(--gold);
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.04em;
+    }
+
+    .c-text {
+      font-size: 0.83rem;
+      color: var(--text-dim);
+      line-height: 1.65;
+    }
+
+    .c-time {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+      letter-spacing: 0.03em;
+    }
+
+    .c-placeholder {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding: 0.5rem 0 1rem;
+      letter-spacing: 0.04em;
+    }
+
+    .comment-form { display: flex; flex-direction: column; gap: 0.65rem; }
+
+    .c-form-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.1rem;
+    }
+
+    .c-input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.84rem;
+      font-weight: 300;
+      padding: 0.62rem 0.85rem;
+      outline: none;
+      resize: none;
+      transition: border-color 0.2s;
+    }
+
+    .c-input::placeholder { color: var(--text-muted); }
+    .c-input:focus { border-color: rgba(212,175,55,0.4); }
+
+    .c-submit {
+      align-self: flex-end;
+      background: transparent;
+      border: 1px solid var(--gold-soft);
+      color: var(--gold);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .c-submit:hover { background: var(--gold-glow-hover); border-color: var(--gold); }
+    .c-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ─── STATES ─────────────────────────────── */
+    .feed-loading {
+      text-align: center;
+      padding: 5rem 2rem;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .pulse { animation: pulse 1.6s ease-in-out infinite; }
+
+    .empty-state {
+      text-align: center;
+      padding: 6rem 2rem;
+    }
+
+    .empty-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .empty-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── FOOTER ─────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.2rem clamp(1.2rem, 5vw, 3.5rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-copy {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+
+    .footer-slogan {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      color: var(--gold);
+      font-style: italic;
+      opacity: 0.75;
+    }
+
+    /* ─── TOAST ──────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(12px);
+      background: var(--surface-2);
+      border: 1px solid var(--border-hover);
+      color: var(--text);
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      padding: 0.65rem 1.6rem;
+      z-index: 9000;
+      opacity: 0;
+      transition: opacity 0.25s, transform 0.25s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ─── ANIMATIONS ─────────────────────────── */
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────── */
+    @media (max-width: 580px) {
+      .post-body { padding: 1.4rem 1.3rem 0; }
+      .post-actions { padding: 0.75rem 1.3rem; }
+      .comments-wrap { padding: 1.3rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══════════════════════════════════════════════ -->
+<nav>
+  <a href="../index.html" class="nav-brand">
+    <img
+      src="https://res.cloudinary.com/dc2gwj09q/image/upload/v1774393133/file_00000000f4b871f4bf0aab23ea93084a-removebg-preview_badboh.png"
+      alt="Synthova Oil">
+    <span class="nav-brand-divider"></span>
+    <span class="nav-brand-name">The Drop</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#feed">Issues</a></li>
+    <li><a href="../index.html">Order</a></li>
+  </ul>
+  <a href="../index.html#subscribe" class="nav-action">Subscribe</a>
+</nav>
+
+<!-- ═══ HERO ════════════════════════════════════════════════ -->
+<header class="hero">
+  <div class="hero-ambient"></div>
+  <p class="hero-eyebrow">Synthova Oil · Newsletter Channel</p>
+  <h1 class="hero-wordmark">
+    <span class="the">The</span>
+    <span class="drop">Drop.</span>
+  </h1>
+  <div class="hero-rule"></div>
+  <p class="hero-sub">Updates, stories, and offers from Benin City's finest cooking oil — delivered with purpose.</p>
+</header>
+
+<!-- ═══ FEED ════════════════════════════════════════════════ -->
+<main class="feed-shell" id="feed">
+  <div class="feed-header">
+    <span class="feed-header-label">All Issues</span>
+    <div class="feed-header-line"></div>
+  </div>
+  <div id="post-feed">
+    <div class="feed-loading pulse">Loading issues…</div>
+  </div>
+</main>
+
+<!-- ═══ FOOTER ══════════════════════════════════════════════ -->
+<footer>
+  <span class="footer-copy">© 2026 Synthova Oil. Ugbowo, Benin City, Nigeria.</span>
+  <span class="footer-slogan">…every drop is divine.</span>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+
+<script>
+// ════════════════════════════════════════════════════════════════
+//  CONFIG — paste your deployed Apps Script URL here after setup
+// ════════════════════════════════════════════════════════════════
+const SCRIPT_URL = '';
+
+// ─── DEMO DATA (used when SCRIPT_URL is empty) ───────────────
+const DEMO_POSTS = [
+  {
+    id: 'demo1',
+    issue: 'Issue 01',
+    title: 'Fresh Deliveries, Fresh Starts',
+    content: `We're officially live with our Monday, Wednesday, and Saturday delivery schedule across Ugbowo. Whether you're stocking up for the week or running low mid-week, your next drop is never more than a few days away.\n\nThis week we're carrying our signature 75cl bottles — golden, pure, and pressed right. If you've been sleeping on the quality of locally-sourced cooking oil, this is your invitation to reconsider.\n\nPlace your order by Sunday evening to catch Monday's run. WhatsApp us or hit the order form on the main page.`,
+    imageUrl: '',
+    date: 'May 19, 2026',
+    likes: 12,
+    commentCount: 2,
+    liked: false
+  },
+  {
+    id: 'demo2',
+    issue: 'Issue 02',
+    title: 'Why the Oil You Cook With Actually Matters',
+    content: `You've probably heard it before — "not all oil is the same." But here's what most people skip past: the oil you cook with affects not just the taste of your food, but the temperature at which nutrients survive the heat.\n\nSynthova Oil is refined to a high smoke point. That means less breakdown during frying, less bitterness in your stew, and more of the good stuff staying in your food. Small detail. Big difference over time.\n\nDeliveries this week go out Wednesday and Saturday. Ugbowo locations only for now — more areas coming soon.`,
+    imageUrl: '',
+    date: 'May 12, 2026',
+    likes: 27,
+    commentCount: 3,
+    liked: false
+  }
+];
+
+const DEMO_COMMENTS = {
+  demo1: [
+    { name: 'Blessing O.', text: 'Finally! I've been waiting for a reliable oil source around Ugbowo. Saturday delivery works perfectly for me.', time: '2 days ago' },
+    { name: 'David A.', text: 'Just placed my first order. The form was smooth, looking forward to the delivery.', time: '1 day ago' }
+  ],
+  demo2: [
+    { name: 'Amara K.', text: 'Never thought about smoke point before reading this. Changed how I cook.', time: '3 days ago' },
+    { name: 'Emeka T.', text: 'This is the kind of content I actually want in my inbox. Keep it coming.', time: '5 days ago' },
+    { name: 'Chisom B.', text: 'Ordered last Wednesday. The oil arrived on time and the quality is real.', time: '6 days ago' }
+  ]
+};
+
+// ─── STATE ───────────────────────────────────────────────────
+let posts = [];
+let likedPosts = {};
+let expandedPosts = {};
+let openCommentPosts = {};
+
+try { likedPosts = JSON.parse(localStorage.getItem('synthova_liked') || '{}'); } catch(_) {}
+
+// ─── JSONP BRIDGE (CORS-safe for Apps Script) ────────────────
+function jsonpFetch(url) {
+  return new Promise((resolve, reject) => {
+    const cbName = '__sn_' + Date.now() + '_' + (Math.random() * 1e6 | 0);
+    let script;
+    const cleanup = () => { delete window[cbName]; if (script?.parentNode) script.remove(); };
+    const timer = setTimeout(() => { cleanup(); reject(new Error('timeout')); }, 8000);
+    window[cbName] = (data) => { clearTimeout(timer); cleanup(); resolve(data); };
+    script = document.createElement('script');
+    script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cbName;
+    script.onerror = () => { clearTimeout(timer); cleanup(); reject(new Error('network error')); };
+    document.head.appendChild(script);
+  });
+}
+
+// ─── LOAD POSTS ──────────────────────────────────────────────
+async function loadPosts() {
+  if (!SCRIPT_URL) {
+    posts = DEMO_POSTS.map(p => ({ ...p, liked: !!likedPosts[p.id] }));
+    renderFeed();
+    return;
+  }
+  try {
+    const data = await jsonpFetch(SCRIPT_URL + '?action=getPosts');
+    posts = (data.posts || []).map(p => ({ ...p, liked: !!likedPosts[p.id] }));
+    renderFeed();
+  } catch(_) {
+    posts = DEMO_POSTS.map(p => ({ ...p, liked: !!likedPosts[p.id] }));
+    renderFeed();
+    showToast('Using offline preview');
+  }
+}
+
+// ─── RENDER FEED ─────────────────────────────────────────────
+function renderFeed() {
+  const el = document.getElementById('post-feed');
+  if (!posts.length) {
+    el.innerHTML = `
+      <div class="empty-state">
+        <p class="empty-title">Nothing here yet.</p>
+        <p class="empty-sub">The first drop is coming soon.</p>
+      </div>`;
+    return;
+  }
+  el.innerHTML = posts.map(renderPost).join('');
+  el.querySelectorAll('.post-card').forEach((card, i) => {
+    card.style.animationDelay = (i * 0.13) + 's';
+  });
+}
+
+function renderPost(p) {
+  const isExp = !!expandedPosts[p.id];
+  const commOpen = !!openCommentPosts[p.id];
+  const paragraphs = (p.content || '').split(/\n+/).filter(Boolean)
+    .map(t => `<p>${escHtml(t)}</p>`).join('');
+
+  return `
+<article class="post-card" id="post-${p.id}">
+
+  ${p.imageUrl ? `<div class="post-img-wrap"><img class="post-img" src="${escHtml(p.imageUrl)}" alt="${escHtml(p.title)}" loading="lazy"></div>` : ''}
+
+  <div class="post-body">
+    <div class="post-meta">
+      <span class="post-issue-tag">${escHtml(p.issue || 'Issue')}</span>
+      <span class="post-meta-dot"></span>
+      <span class="post-date">${escHtml(p.date || '')}</span>
+    </div>
+    <h2 class="post-title">${escHtml(p.title)}</h2>
+    <div class="post-content ${isExp ? '' : 'collapsed'}" id="pc-${p.id}">${paragraphs}</div>
+    <button class="read-toggle" onclick="toggleExpand('${p.id}')" id="rt-${p.id}">
+      ${isExp ? 'Show less ↑' : 'Read more ↓'}
+    </button>
+  </div>
+
+  <div class="post-actions">
+    <button class="act-btn ${p.liked ? 'liked' : ''}" onclick="handleLike('${p.id}')" id="lb-${p.id}" title="Like">
+      <svg class="heart" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+      <span id="lc-${p.id}">${p.likes || 0}</span>
+    </button>
+    <div class="act-sep"></div>
+    <button class="act-btn" onclick="toggleComments('${p.id}')" title="Comments">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      <span id="cc-${p.id}">${p.commentCount || 0}</span>
+    </button>
+    <div class="act-sep"></div>
+    <button class="act-btn" onclick="handleShare('${p.id}')" title="Share">
+      <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+      Share
+    </button>
+  </div>
+
+  <div class="comments-wrap ${commOpen ? 'open' : ''}" id="cw-${p.id}">
+    <div class="comments-list" id="cl-${p.id}">
+      <p class="c-placeholder pulse">Loading comments…</p>
+    </div>
+    <div class="comment-form">
+      <p class="c-form-label">Leave a comment</p>
+      <input  class="c-input" id="cn-${p.id}" type="text"  placeholder="Your name"        maxlength="60">
+      <textarea class="c-input" id="ct-${p.id}" placeholder="Write something…" rows="3"   maxlength="500"></textarea>
+      <button class="c-submit" id="cs-${p.id}" onclick="submitComment('${p.id}')">Post →</button>
+    </div>
+  </div>
+
+</article>`;
+}
+
+// ─── EXPAND / COLLAPSE ───────────────────────────────────────
+function toggleExpand(id) {
+  expandedPosts[id] = !expandedPosts[id];
+  const el = document.getElementById('pc-' + id);
+  const btn = document.getElementById('rt-' + id);
+  if (expandedPosts[id]) {
+    el.classList.remove('collapsed');
+    btn.textContent = 'Show less ↑';
+  } else {
+    el.classList.add('collapsed');
+    btn.textContent = 'Read more ↓';
+  }
+}
+
+// ─── LIKES ───────────────────────────────────────────────────
+async function handleLike(id) {
+  const p = posts.find(x => x.id === id);
+  if (!p) return;
+  const btn = document.getElementById('lb-' + id);
+  const count = document.getElementById('lc-' + id);
+  const svgPath = btn.querySelector('path');
+
+  p.liked = !p.liked;
+  if (p.liked) {
+    p.likes = (p.likes || 0) + 1;
+    likedPosts[id] = true;
+    btn.classList.add('liked');
+    svgPath.setAttribute('fill', 'currentColor');
+  } else {
+    p.likes = Math.max(0, (p.likes || 1) - 1);
+    delete likedPosts[id];
+    btn.classList.remove('liked');
+    svgPath.removeAttribute('fill');
+  }
+  count.textContent = p.likes;
+  try { localStorage.setItem('synthova_liked', JSON.stringify(likedPosts)); } catch(_) {}
+  if (SCRIPT_URL && p.liked) jsonpFetch(SCRIPT_URL + '?action=like&postId=' + encodeURIComponent(id)).catch(() => {});
+}
+
+// ─── COMMENTS ────────────────────────────────────────────────
+async function toggleComments(id) {
+  const wrap = document.getElementById('cw-' + id);
+  const isOpen = wrap.classList.contains('open');
+  if (isOpen) {
+    wrap.classList.remove('open');
+    openCommentPosts[id] = false;
+  } else {
+    wrap.classList.add('open');
+    openCommentPosts[id] = true;
+    await loadComments(id);
+  }
+}
+
+async function loadComments(id) {
+  const list = document.getElementById('cl-' + id);
+  let comments = [];
+
+  if (!SCRIPT_URL) {
+    comments = DEMO_COMMENTS[id] || [];
+  } else {
+    try {
+      const data = await jsonpFetch(SCRIPT_URL + '?action=getComments&postId=' + encodeURIComponent(id));
+      comments = data.comments || [];
+    } catch(_) {
+      comments = DEMO_COMMENTS[id] || [];
+    }
+  }
+
+  if (!comments.length) {
+    list.innerHTML = '<p class="c-placeholder">No comments yet. Be the first.</p>';
+    return;
+  }
+  list.innerHTML = comments.map(c => `
+    <div class="c-item">
+      <p class="c-name">${escHtml(c.name)}</p>
+      <p class="c-text">${escHtml(c.text)}</p>
+      <p class="c-time">${escHtml(c.time || '')}</p>
+    </div>`).join('');
+}
+
+async function submitComment(id) {
+  const nameEl = document.getElementById('cn-' + id);
+  const textEl = document.getElementById('ct-' + id);
+  const submitEl = document.getElementById('cs-' + id);
+  const name = (nameEl?.value || '').trim();
+  const text = (textEl?.value || '').trim();
+
+  if (!name || !text) { showToast('Name and comment required.'); return; }
+
+  nameEl.disabled = textEl.disabled = submitEl.disabled = true;
+
+  if (SCRIPT_URL) {
+    jsonpFetch(
+      SCRIPT_URL + '?action=addComment' +
+      '&postId=' + encodeURIComponent(id) +
+      '&name=' + encodeURIComponent(name) +
+      '&text=' + encodeURIComponent(text)
+    ).catch(() => {});
+  }
+
+  // Optimistic update
+  const listEl = document.getElementById('cl-' + id);
+  const placeholder = listEl.querySelector('.c-placeholder');
+  if (placeholder) placeholder.remove();
+  listEl.insertAdjacentHTML('beforeend', `
+    <div class="c-item">
+      <p class="c-name">${escHtml(name)}</p>
+      <p class="c-text">${escHtml(text)}</p>
+      <p class="c-time">Just now</p>
+    </div>`);
+
+  const p = posts.find(x => x.id === id);
+  if (p) {
+    p.commentCount = (p.commentCount || 0) + 1;
+    const cc = document.getElementById('cc-' + id);
+    if (cc) cc.textContent = p.commentCount;
+  }
+
+  nameEl.value = textEl.value = '';
+  nameEl.disabled = textEl.disabled = submitEl.disabled = false;
+  showToast('Comment posted!');
+}
+
+// ─── SHARE ───────────────────────────────────────────────────
+async function handleShare(id) {
+  const p = posts.find(x => x.id === id);
+  if (!p) return;
+  const url = window.location.origin + window.location.pathname + '#post-' + id;
+  if (navigator.share) {
+    try { await navigator.share({ title: p.title, text: 'From The Drop — ' + p.title, url }); }
+    catch(_) {}
+  } else {
+    try { await navigator.clipboard.writeText(url); showToast('Link copied!'); }
+    catch(_) { showToast('Copy: ' + url); }
+  }
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────
+function escHtml(s) {
+  return String(s || '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ─── INIT ─────────────────────────────────────────────────────
+loadPosts();
+</script>
+</body>
+</html>
